@@ -1,6 +1,8 @@
-SRCS = main.c parse.c ray.c render.c vector.c 
+SRCS = main.c  check_the_map.c  minirt.c validation.c
 
-OBJS = ${SRCS:.c=.o}
+SRCS_DIR = $(addprefix srcs/, $(SRCS))
+
+OBJS = ${SRCS_DIR:.c=.o}
 
 NAME = miniRT
 
@@ -21,19 +23,25 @@ all : $(NAME)
 .c.o :
 		${CC} ${C_FLAGS} -c $< -o ${<:.c=.o} $(INCLUDES)
 
-$(NAME) : $(MLX) ${OBJS}
-		  ${CC} ${C_FLAGS} ${OBJS} $(MLX_FLAGS) -lm -o ${NAME}
+$(NAME) : ${LIBFT} ${GNL} $(MLX) ${OBJS}
+		  ${CC} ${C_FLAGS} ${OBJS} ${LIBFT} $(MLX_FLAGS) ${GNL} -lm -o ${NAME}
 
+$(LIBFT) :
+		  @make -C ./Libft
 
 $(MLX) :
 		@make -C ./mlx
 
+$(GNL) :
+		@make -C ./GNL
 
-clean :
+clean :	
+		@make clean -C ./Libft
+		@make clean -C ./GNL
 		${RM} ${OBJS}
 
 fclean : clean
-		${RM} ${NAME}
+		${RM} ${NAME} ${LIBFT} ${GNL}
 
 re : fclean all
 
