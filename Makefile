@@ -1,4 +1,4 @@
-SRCS = main.c  check_the_map.c  minirt.c validation.c
+SRCS = main.c  check_the_map.c  minirt.c validation.c init.c ray.c light.c render.c vec.c plane.c
 
 SRCS_DIR = $(addprefix srcs/, $(SRCS))
 
@@ -10,13 +10,16 @@ LIBFT = Libft/libft.a
 
 GNL = GNL/gnl.a
 
+MLX = minilibx-linux/libmlx.a
+
 CC = cc
 C_FLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 
-INCLUDES = -I/usr/include -Imlx
+INCLUDES = -L ./lib/mlx -lmlx -lXext -lX11 -lm -lbsd
 
-MLX_FLAGS = -Lmlx -lmlx -L/usr/lib/X11 -lXext -lX11
+
+MLX_FLAGS = -lm -lXext -lX11
 
 all : $(NAME)
 
@@ -24,7 +27,7 @@ all : $(NAME)
 		${CC} ${C_FLAGS} -c $< -o ${<:.c=.o} $(INCLUDES)
 
 $(NAME) : ${LIBFT} ${GNL} $(MLX) ${OBJS}
-		  ${CC} ${C_FLAGS} ${OBJS} ${LIBFT} $(MLX_FLAGS) ${GNL} -lm -o ${NAME}
+		  ${CC} ${C_FLAGS} ${OBJS} ${LIBFT} ${MLX} $(MLX_FLAGS) ${GNL} -lm -o ${NAME}
 
 $(LIBFT) :
 		  @make -C ./Libft

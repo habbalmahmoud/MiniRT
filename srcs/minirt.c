@@ -16,7 +16,7 @@ void minirt(char **av)
     else
     {
         freearray(map);
-		printf("a : %f r:%f g:%f b:%f \n", cor->am.am, cor->am.rgb[0], cor->am.rgb[1], cor->am.rgb[2]);
+		init(cor);	
         
         free(cor);
     }

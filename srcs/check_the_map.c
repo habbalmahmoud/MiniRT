@@ -8,7 +8,7 @@ int fill_map(int fd, char **map)
 
     i = 0;
     line = get_next_line(fd);
-    while (line != NULL)
+	while (line != NULL)
     {
         map[i] = line;
         i++;

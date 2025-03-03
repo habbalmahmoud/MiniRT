@@ -5,7 +5,7 @@
 #include <math.h>
 #include "../Libft/libft.h"
 #include "../GNL/get_next_line.h"
-#include "../mlx/mlx.h"
+#include "../minilibx-linux/mlx.h"
 #include "X11/X.h"
 #include "X11/keysym.h"
 #include <stdlib.h>
@@ -108,6 +108,12 @@ typedef struct s_val
     bool    pl;
 } t_val;
 
+typedef struct s_ray {
+    float orig[3];   // Ray origin
+    float dir[3];    // Ray direction (should be normalized)
+} t_ray;
+
+
 /* Function prototypes */
 
 /* Object list management */
@@ -122,16 +128,26 @@ void         add_plane(t_cor *cor, t_pl plane);
 char       **checking_the_map(char *str);
 int         validate(char **map, t_cor *cor);
 
-/* Window and rendering */
-void        minirt(char **av);
-void        create_window(t_mlx *mlx, t_cor *cor);
-void        render_scene(t_mlx *mlx, t_cor *cor);
-void        put_pixel(t_mlx *mlx, int x, int y, int color);
 
-/* Raytracing helpers */
-float       dot_product(float v1[3], float v2[3]);
-void        normalize(float v[3]);
-int         ray_intersects_sphere(float origin[3], float dir[3], t_sp sphere, float *t);
-int is_in_shadow(float hit_point[3], t_cor *scene, float light_pos[3]);
+void        minirt(char **av);
+ float dot(const float a[3], const float b[3]);
+ void subtract(const float a[3], const float b[3], float out[3]);
+ void add(const float a[3], const float b[3], float out[3]);
+ void scale(const float v[3], float s, float out[3]);
+ void cross(const float a[3], const float b[3], float out[3]);
+ void normalize(const float in[3], float out[3]);
+ float intersect_sphere(t_ray ray, t_sp *sphere);
+ void sphere_normal(t_sp *sphere, float hit_point[3], float normal[3]);
+ int compute_lighting(float hit_point[3], float normal[3], t_cor *scene);
+ int create_trgb(int t, int r, int g, int b);
+ void put_pixel(t_mlx *mlx, int x, int y, int color);
+ t_ray generate_ray(int x, int y, t_cm *cam);
+ void render_scene(t_mlx *mlx, t_cor *scene);
+int init(t_cor *scene);
+float intersect_plane(t_ray ray, t_pl *plane);
+void plane_normal(t_pl *plane, float normal[3]);
+int in_shadow(t_cor *scene, float hit_point[3], float normal[3]);
+
+
 
 #endif
