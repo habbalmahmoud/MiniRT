@@ -31,6 +31,7 @@ typedef struct s_light
 {
     float       cor[3];
     float       brightness;
+	float		rgb[3];
 }               t_light;
 
 typedef struct s_am
@@ -130,12 +131,12 @@ int         validate(char **map, t_cor *cor);
 
 
 void        minirt(char **av);
- float dot(const float a[3], const float b[3]);
- void subtract(const float a[3], const float b[3], float out[3]);
- void add(const float a[3], const float b[3], float out[3]);
- void scale(const float v[3], float s, float out[3]);
- void cross(const float a[3], const float b[3], float out[3]);
- void normalize(const float in[3], float out[3]);
+ float dot(float a[3], float b[3]);
+ void subtract(float a[3],float b[3], float out[3]);
+ void add(float a[3],float b[3], float out[3]);
+ void scale(float v[3], float s, float out[3]);
+ void cross(float a[3],float b[3], float out[3]);
+ void normalize(float in[3], float out[3]);
  float intersect_sphere(t_ray ray, t_sp *sphere);
  void sphere_normal(t_sp *sphere, float hit_point[3], float normal[3]);
  int compute_lighting(float hit_point[3], float normal[3], t_cor *scene);
@@ -147,7 +148,7 @@ int init(t_cor *scene);
 float intersect_plane(t_ray ray, t_pl *plane);
 void plane_normal(t_pl *plane, float normal[3]);
 int in_shadow(t_cor *scene, float hit_point[3], float normal[3]);
-
-
+void cylinder_normal(t_cy *cyl, float hit_point[3], int hit_part, float normal[3]);
+float intersect_cylinder(t_ray ray, t_cy *cylinder, int *hit_part);
 
 #endif

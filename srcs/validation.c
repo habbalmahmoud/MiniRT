@@ -119,7 +119,7 @@ t_sp_list *new_sphere(t_sp sphere)
         perror("Failed to allocate sphere node");
         return (NULL);
     }
-    node->sphere = sphere;
+    node->sphere = &sphere;
     node->next = NULL;
     return (node);
 }
@@ -152,7 +152,7 @@ t_cy_list *new_cylinder(t_cy cyl)
         perror("Failed to allocate cylinder node");
         return (NULL);
     }
-    node->cyl = cyl;
+    node->cyl = &cyl;
     node->next = NULL;
     return (node);
 }
@@ -185,7 +185,7 @@ t_pl_list *new_plane(t_pl plane)
         perror("Failed to allocate plane node");
         return (NULL);
     }
-    node->plane = plane;
+    node->plane = &plane;
     node->next = NULL;
     return (node);
 }
@@ -203,7 +203,7 @@ void add_plane(t_cor *cor, t_pl plane)
         return;
     }
     tmp = cor->planes;
-    while (tmp->next)
+    while (tmp && tmp->next)
         tmp = tmp->next;
     tmp->next = node;
 }
@@ -391,8 +391,9 @@ int check_cor_c(char **line, t_cor *cor)
 int check_cor_l(char **line, t_cor *cor)
 {
     char **xyz;
+	char **rgb;
 
-    if (twodsize(line) != 3)
+    if (twodsize(line) != 4)
     {
         printf("Error: Light requires 2 arguments\n");
         return (1);
@@ -408,7 +409,12 @@ int check_cor_l(char **line, t_cor *cor)
     cor->light.cor[1] = string_to_float(xyz[1]);
     cor->light.cor[2] = string_to_float(xyz[2]);
     cor->light.brightness = string_to_float(line[2]);
+	rgb = ft_split(line[3], ',');
+	cor->light.rgb[0] = string_to_float(rgb[0]);
+	cor->light.rgb[1] = string_to_float(rgb[1]);
+	cor->light.rgb[2] = string_to_float(rgb[2]);
     freearray(xyz);
+	freearray(rgb);
     return (0);
 }
 

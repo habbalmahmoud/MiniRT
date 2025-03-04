@@ -17,6 +17,7 @@ int init(t_cor *scenee)
     t_cor scene;
     t_sp_list *sphere_node;
     t_pl_list *plane_node, *plane_node2;
+	t_cy_list *cylinder_node;
 
     /* Initialize miniLibX */
     mlx.ptr = mlx_init();
@@ -99,6 +100,25 @@ int init(t_cor *scenee)
 
 	plane_node->next = plane_node2;
     scene.planes = plane_node;
+
+
+cylinder_node = malloc(sizeof(t_cy_list));
+    if (!cylinder_node)
+        return (1);
+    cylinder_node->cyl.cor[0] = 3;
+    cylinder_node->cyl.cor[1] = 0;
+    cylinder_node->cyl.cor[2] = 8;
+    cylinder_node->cyl.vector[0] = 0;
+    cylinder_node->cyl.vector[1] = 1;
+    cylinder_node->cyl.vector[2] = 0;
+    cylinder_node->cyl.cy_diameter = 2;
+    cylinder_node->cyl.cy_height = 4;
+    cylinder_node->cyl.rgb[0] = 150;
+    cylinder_node->cyl.rgb[1] = 0;
+    cylinder_node->cyl.rgb[2] = 150;
+    cylinder_node->next = NULL;
+    scene.cylinders = cylinder_node;
+
 
     /* Render the scene */
     render_scene(&mlx, &scene);
