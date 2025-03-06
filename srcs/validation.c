@@ -119,7 +119,7 @@ t_sp_list *new_sphere(t_sp sphere)
         perror("Failed to allocate sphere node");
         return (NULL);
     }
-    node->sphere = &sphere;
+    node->sphere = sphere;
     node->next = NULL;
     return (node);
 }
@@ -152,7 +152,7 @@ t_cy_list *new_cylinder(t_cy cyl)
         perror("Failed to allocate cylinder node");
         return (NULL);
     }
-    node->cyl = &cyl;
+    node->cyl = cyl;
     node->next = NULL;
     return (node);
 }
@@ -185,7 +185,7 @@ t_pl_list *new_plane(t_pl plane)
         perror("Failed to allocate plane node");
         return (NULL);
     }
-    node->plane = &plane;
+    node->plane = plane;
     node->next = NULL;
     return (node);
 }
