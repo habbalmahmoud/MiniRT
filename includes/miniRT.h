@@ -114,6 +114,38 @@ typedef struct s_ray {
     float dir[3];    // Ray direction (should be normalized)
 } t_ray;
 
+typedef struct s_cy_utils {
+	float v[3];
+	float r;
+	float h;
+	float half_h;
+	float delta[3];
+	float D_dot_v;
+	float D_prep[3];
+	float delta_prep[3];
+	float temp[3];
+	float A;
+	float B;
+	float c_val;
+	float t_lateral;
+	float discriminant;
+	float sqrt_disc;
+	float t1;
+	float t2;
+	float P[3];
+	float tempP[3];
+	float temp_vec[3];
+	float proj;
+	float top_center[3];
+	float bottom_center[3];
+	float half_v[3];
+	float t_top;
+	float denom;
+	float diff[3];
+	float t_final;
+	int part;
+}       t_cy_utils;
+
 
 /* Function prototypes */
 

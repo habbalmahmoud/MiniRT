@@ -1,5 +1,9 @@
 #include "../includes/miniRT.h"
 
+void	intersect_cylinder2()
+{
+
+}
 
 float intersect_cylinder(t_ray ray, t_cy *cylinder, int *hit_part)
 {
@@ -122,25 +126,28 @@ float intersect_cylinder(t_ray ray, t_cy *cylinder, int *hit_part)
 void cylinder_normal(t_cy *cyl, float hit_point[3], int hit_part, float normal[3])
 {
     float v[3];
-    normalize(cyl->vector, v);
-    if (hit_part == 0) {
-        // Lateral surface: project hit point onto the cylinder axis.
-        float temp[3], proj_vec[3];
+	float temp[3]; 
+	float proj_vec[3];
+	float proj;
+	float lateral[3];
+
+	normalize(cyl->vector, v);
+    if (hit_part == 0)
+	{ 
         subtract(hit_point, cyl->cor, temp);
-        float proj = dot(temp, v);
+        proj = dot(temp, v);
         scale(v, proj, proj_vec);
-        float lateral[3];
         subtract(temp, proj_vec, lateral);
         normalize(lateral, normal);
     }
-    else if (hit_part == 1) {
-        // Top cap: normal is the axis direction.
+    else if (hit_part == 1)
+	{ 
         normal[0] = v[0];
         normal[1] = v[1];
         normal[2] = v[2];
     }
-    else if (hit_part == 2) {
-        // Bottom cap: normal is opposite to the axis.
+    else if (hit_part == 2)
+	{
         normal[0] = -v[0];
         normal[1] = -v[1];
         normal[2] = -v[2];
