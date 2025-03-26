@@ -121,12 +121,13 @@ typedef struct s_cy_utils {
 	float half_h;
 	float delta[3];
 	float D_dot_v;
-	float D_prep[3];
-	float delta_prep[3];
+	float D_perp[3];
+	float delta_dot_v;
+	float delta_perp[3];
 	float temp[3];
 	float A;
 	float B;
-	float c_val;
+	float C_val;
 	float t_lateral;
 	float discriminant;
 	float sqrt_disc;
@@ -140,6 +141,7 @@ typedef struct s_cy_utils {
 	float bottom_center[3];
 	float half_v[3];
 	float t_top;
+	float t_bottom;
 	float denom;
 	float diff[3];
 	float t_final;
