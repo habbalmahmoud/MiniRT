@@ -2,45 +2,43 @@
 
 int in_shadow(t_cor *scene, float hit_point[3], float normal[3])
 {
-    float epsilon = 0.001f;
-    float shadow_orig[3];
-    for (int i = 0; i < 3; i++)
-        shadow_orig[i] = hit_point[i] + normal[i] * epsilon;
+	t_ish_utils shadow_utils;
+	int i;
 
-    float light_dir[3];
-    subtract(scene->light.cor, shadow_orig, light_dir);
-    float light_distance = sqrt(dot(light_dir, light_dir));
-    normalize(light_dir, light_dir);
-
-    t_ray shadow_ray;
+	i = -1;
+    shadow_utils.epsilon = 0.001f;
+	while (++i < 3)
+		shadow_utils.shadow_orig[i] = hit_point[i] + normal[i] * shadow_utils.epsilon;
+    subtract(scene->light.cor, shadow_utils.shadow_orig, shadow_utils.light_dir);
+    shadow_utils.light_distance = sqrt(dot(shadow_utils.light_dir, shadow_utils.light_dir));
+    normalize(shadow_utils.light_dir, shadow_utils.light_dir);
     for (int i = 0; i < 3; i++) {
-        shadow_ray.orig[i] = shadow_orig[i];
-        shadow_ray.dir[i] = light_dir[i];
+        shadow_utils.shadow_ray.orig[i] = shadow_utils.shadow_orig[i];
+        shadow_utils.shadow_ray.dir[i] = shadow_utils.light_dir[i];
     }
     // Check spheres
-    t_sp_list *cur_s = scene->spheres;
-    while (cur_s) {
-        float t = intersect_sphere(shadow_ray, &cur_s->sphere);
-        if (t > 0.001f && t < light_distance)
+    shadow_utils.cur_s = scene->spheres;
+    while (shadow_utils.cur_s) {
+        shadow_utils.t = intersect_sphere(shadow_utils.shadow_ray, &shadow_utils.cur_s->sphere);
+        if (shadow_utils.t > 0.001f && shadow_utils.t < shadow_utils.light_distance)
             return 1;
-        cur_s = cur_s->next;
+        shadow_utils.cur_s = shadow_utils.cur_s->next;
     }
     // Check planes
-    t_pl_list *cur_p = scene->planes;
-    while (cur_p) {
-        float t = intersect_plane(shadow_ray, &cur_p->plane);
-        if (t > 0.001f && t < light_distance)
+    shadow_utils.cur_p = scene->planes;
+    while (shadow_utils.cur_p) {
+        shadow_utils.t = intersect_plane(shadow_utils.shadow_ray, &shadow_utils.cur_p->plane);
+        if (shadow_utils.t > 0.001f && shadow_utils.t < shadow_utils.light_distance)
             return 1;
-        cur_p = cur_p->next;
+        shadow_utils.cur_p = shadow_utils.cur_p->next;
     }
     // Check cylinders
-    t_cy_list *cur_c = scene->cylinders;
-    while (cur_c) {
-        int dummy;
-        float t = intersect_cylinder(shadow_ray, &cur_c->cyl, &dummy);
-        if (t > 0.001f && t < light_distance)
+    shadow_utils.cur_c = scene->cylinders;
+    while (shadow_utils.cur_c) {
+        shadow_utils.t = intersect_cylinder(shadow_utils.shadow_ray, &shadow_utils.cur_c->cyl, &shadow_utils.dummy);
+        if (shadow_utils.t > 0.001f && shadow_utils.t < shadow_utils.light_distance)
             return 1;
-        cur_c = cur_c->next;
+        shadow_utils.cur_c = shadow_utils.cur_c->next;
     }
     return 0;
 }

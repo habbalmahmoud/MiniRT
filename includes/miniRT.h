@@ -148,6 +148,26 @@ typedef struct s_cy_utils {
 	int part;
 }       t_cy_utils;
 
+typedef struct s_cyl_norm {
+	float v[3];
+	float temp[3];
+	float proj_vec[3];
+	float proj;
+	float lateral[3];
+}		t_cyl_norm;
+
+typedef struct s_ish_utils {
+	float epsilon;
+	float shadow_orig[3];
+	float light_dir[3];
+	float light_distance;
+	t_ray shadow_ray;
+	t_sp_list *cur_s;
+	float t;
+	t_pl_list *cur_p;
+	t_cy_list *cur_c;
+	int dummy;
+}		t_ish_utils;
 
 /* Function prototypes */
 
@@ -184,5 +204,10 @@ void plane_normal(t_pl *plane, float normal[3]);
 int in_shadow(t_cor *scene, float hit_point[3], float normal[3]);
 void cylinder_normal(t_cy *cyl, float hit_point[3], int hit_part, float normal[3]);
 float intersect_cylinder(t_ray ray, t_cy *cylinder, int *hit_part);
+void int_cyl(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
+void int_cyl2(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
+void int_cyl4(t_ray ray, t_cy_utils *cy_utils);
+void int_cyl3(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
+int int_cyl5(t_cy_utils *cy_utils, int *hit_part);
 
 #endif
