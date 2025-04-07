@@ -70,7 +70,6 @@ typedef struct s_pl
     float       rgb[3];
 }               t_pl;
 
-/* Linked-list node definitions for each object type */
 typedef struct s_sp_list {
     t_sp                sphere;
     struct s_sp_list    *next;
@@ -86,8 +85,6 @@ typedef struct s_pl_list {
     struct s_pl_list    *next;
 } t_pl_list;
 
-/* Unified scene structure.
-   We use t_cor as our scene type. */
 typedef struct s_cor
 {
     t_am        am;
@@ -98,7 +95,6 @@ typedef struct s_cor
     t_pl_list   *planes;
 } t_cor;
 
-/* Structure for duplicate checking for A, C, L */
 typedef struct s_val
 {
     bool    a;
@@ -110,8 +106,8 @@ typedef struct s_val
 } t_val;
 
 typedef struct s_ray {
-    float orig[3];   // Ray origin
-    float dir[3];    // Ray direction (should be normalized)
+    float orig[3];
+    float dir[3]; 
 } t_ray;
 
 typedef struct s_cy_utils {
@@ -169,45 +165,66 @@ typedef struct s_ish_utils {
 	int dummy;
 }		t_ish_utils;
 
-/* Function prototypes */
+typedef struct s_sphere_utils
+{
+	float oc[3];
+	float r;
+	float a;
+	float b;
+	float c;
+	float discriminant;
+	float sqrt_disc;
+	float t1;
+	float t2;
+}		t_sphere_utils;
 
-/* Object list management */
+typedef struct s_ray_utils
+{
+	t_ray ray;
+	float forward[3];
+	float right[3];
+	float true_up[3];
+	float up[3];
+	float fov_rad;
+	float aspect_ratio;
+	float px;
+	float py;
+	float dir[3];
+	float tmp[3];
+}		t_ray_utils;
+
 t_sp_list   *new_sphere(t_sp sphere);
 void         add_sphere(t_cor *cor, t_sp sphere);
 t_cy_list   *new_cylinder(t_cy cyl);
 void         add_cylinder(t_cor *cor, t_cy cyl);
 t_pl_list   *new_plane(t_pl plane);
 void         add_plane(t_cor *cor, t_pl plane);
-
-/* Validation / Parsing functions */
 char       **checking_the_map(char *str);
 int         validate(char **map, t_cor *cor);
-
-
 void        minirt(char **av);
- float dot(float a[3], float b[3]);
- void subtract(float a[3],float b[3], float out[3]);
- void add(float a[3],float b[3], float out[3]);
- void scale(float v[3], float s, float out[3]);
- void cross(float a[3],float b[3], float out[3]);
- void normalize(float in[3], float out[3]);
- float intersect_sphere(t_ray ray, t_sp *sphere);
- void sphere_normal(t_sp *sphere, float hit_point[3], float normal[3]);
- int compute_lighting(float hit_point[3], float normal[3], t_cor *scene);
- int create_trgb(int t, int r, int g, int b);
- void put_pixel(t_mlx *mlx, int x, int y, int color);
- t_ray generate_ray(int x, int y, t_cm *cam);
- void render_scene(t_mlx *mlx, t_cor *scene);
-int init(t_cor *scene);
-float intersect_plane(t_ray ray, t_pl *plane);
-void plane_normal(t_pl *plane, float normal[3]);
-int in_shadow(t_cor *scene, float hit_point[3], float normal[3]);
-void cylinder_normal(t_cy *cyl, float hit_point[3], int hit_part, float normal[3]);
-float intersect_cylinder(t_ray ray, t_cy *cylinder, int *hit_part);
-void int_cyl(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
-void int_cyl2(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
-void int_cyl4(t_ray ray, t_cy_utils *cy_utils);
-void int_cyl3(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
-int int_cyl5(t_cy_utils *cy_utils, int *hit_part);
+float		dot(float a[3], float b[3]);
+void		subtract(float a[3],float b[3], float out[3]);
+void		add(float a[3],float b[3], float out[3]);
+void		scale(float v[3], float s, float out[3]);
+void		cross(float a[3],float b[3], float out[3]);
+void		normalize(float in[3], float out[3]);
+float		intersect_sphere(t_ray ray, t_sp *sphere);
+void		sphere_normal(t_sp *sphere, float hit_point[3], float normal[3]);
+int			compute_lighting(float hit_point[3], float normal[3], t_cor *scene);
+int			create_trgb(int t, int r, int g, int b);
+void		put_pixel(t_mlx *mlx, int x, int y, int color);
+t_ray		generate_ray(int x, int y, t_cm *cam);
+void		render_scene(t_mlx *mlx, t_cor *scene);
+int			init(t_cor *scene);
+float		intersect_plane(t_ray ray, t_pl *plane);
+void		plane_normal(t_pl *plane, float normal[3]);
+int			in_shadow(t_cor *scene, float hit_point[3], float normal[3]);
+void		cylinder_normal(t_cy *cyl, float hit_point[3], int hit_part, float normal[3]);
+float		intersect_cylinder(t_ray ray, t_cy *cylinder, int *hit_part);
+void		int_cyl(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
+void		int_cyl2(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
+void		int_cyl4(t_ray ray, t_cy_utils *cy_utils);
+void		int_cyl3(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
+int			int_cyl5(t_cy_utils *cy_utils, int *hit_part);
 
 #endif

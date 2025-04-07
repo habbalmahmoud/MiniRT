@@ -1,8 +1,6 @@
 #include "../includes/miniRT.h"
 
-
-
- void put_pixel(t_mlx *mlx, int x, int y, int color)
+void put_pixel(t_mlx *mlx, int x, int y, int color)
 {
     char    *dst;
 
@@ -12,60 +10,45 @@
     *(unsigned int*)dst = color;
 }
 
-/* === Ray Generation from Camera === */
+void gen_ray(t_ray_utils *ray_utils, t_cm *cam)
+{
+	ray_utils->up[0] = 0;
+	ray_utils->up[1] = 1;
+	ray_utils->up[2] = 0;
+    ray_utils->ray.orig[0] = cam->cor[0];
+    ray_utils->ray.orig[1] = cam->cor[1];
+    ray_utils->ray.orig[2] = cam->cor[2];
+    ray_utils->forward[0] = cam->vector[0];
+    ray_utils->forward[1] = cam->vector[1];
+    ray_utils->forward[2] = cam->vector[2];
+    normalize(ray_utils->forward, ray_utils->forward);
+    if (fabs(dot(ray_utils->forward, ray_utils->up)) > 0.999f)
+    {
+        ray_utils->up[0] = 1;
+        ray_utils->up[1] = 0;
+        ray_utils->up[2] = 0;
+    }
+}
 
-/*
- * generate_ray:
- *   Given a pixel (x, y) and camera parameters, computes the ray that passes
- *   from the camera origin through the pixel.
- */
  t_ray generate_ray(int x, int y, t_cm *cam)
 {
-    t_ray ray;
-    float forward[3], right[3], true_up[3];
-    float up[3] = {0, 1, 0};
+	t_ray_utils ray_utils;
 
-    /* Camera origin */
-    ray.orig[0] = cam->cor[0];
-    ray.orig[1] = cam->cor[1];
-    ray.orig[2] = cam->cor[2];
-
-    /* Forward vector (camera direction) */
-    forward[0] = cam->vector[0];
-    forward[1] = cam->vector[1];
-    forward[2] = cam->vector[2];
-    normalize(forward, forward);
-
-    /* Compute right vector (cross of forward and up) */
-    if (fabs(dot(forward, up)) > 0.999f)
-    {
-        up[0] = 1;
-        up[1] = 0;
-        up[2] = 0;
-    }
-    cross(forward, up, right);
-    normalize(right, right);
-
-    /* Recompute true up vector */
-    cross(right, forward, true_up);
-    normalize(true_up, true_up);
-
-    /* Convert FOV (horizontal) to radians */
-    float fov_rad = cam->fov * (M_PI / 180.0f);
-    float aspect_ratio = (float)WIDTH / (float)HEIGHT;
-    /* Screen space coordinates (normalized to [-1, 1]) */
-    float px = (2 * ((x + 0.5f) / WIDTH) - 1) * tan(fov_rad / 2) * aspect_ratio;
-    float py = (1 - 2 * ((y + 0.5f) / HEIGHT)) * tan(fov_rad / 2);
-
-    /* Compute ray direction: forward + (px * right) + (py * true_up) */
-    float dir[3], tmp[3];
-    scale(right, px, tmp);
-    add(forward, tmp, dir);
-    scale(true_up, py, tmp);
-    add(dir, tmp, dir);
-    normalize(dir, ray.dir);
-
-    return ray;
+	gen_ray(&ray_utils, cam);
+    cross(ray_utils.forward, ray_utils.up, ray_utils.right);
+    normalize(ray_utils.right, ray_utils.right);
+    cross(ray_utils.right, ray_utils.forward, ray_utils.true_up);
+    normalize(ray_utils.true_up, ray_utils.true_up);
+    ray_utils.fov_rad = cam->fov * (M_PI / 180.0f);
+    ray_utils.aspect_ratio = (float)WIDTH / (float)HEIGHT;
+    ray_utils.px = (2 * ((x + 0.5f) / WIDTH) - 1) * tan(ray_utils.fov_rad / 2) * ray_utils.aspect_ratio;
+    ray_utils.py = (1 - 2 * ((y + 0.5f) / HEIGHT)) * tan(ray_utils.fov_rad / 2);
+    scale(ray_utils.right, ray_utils.px, ray_utils.tmp);
+    add(ray_utils.forward, ray_utils.tmp, ray_utils.dir);
+    scale(ray_utils.true_up, ray_utils.py, ray_utils.tmp);
+    add(ray_utils.dir, ray_utils.tmp, ray_utils.dir);
+    normalize(ray_utils.dir, ray_utils.ray.dir);
+    return ray_utils.ray;
 }
 
 /* === Scene Rendering === */
