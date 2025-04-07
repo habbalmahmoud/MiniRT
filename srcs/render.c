@@ -30,7 +30,7 @@ void gen_ray(t_ray_utils *ray_utils, t_cm *cam)
     }
 }
 
- t_ray generate_ray(int x, int y, t_cm *cam)
+t_ray generate_ray(int x, int y, t_cm *cam)
 {
 	t_ray_utils ray_utils;
 
@@ -51,13 +51,6 @@ void gen_ray(t_ray_utils *ray_utils, t_cm *cam)
     return ray_utils.ray;
 }
 
-/* === Scene Rendering === */
-
-/*
- * render_scene:
- *   Iterates over every pixel, generates a ray, checks for intersections with the sphere(s),
- *   computes lighting, and writes the final color to the image.
- */
 void render_scene(t_mlx *mlx, t_cor *scene)
 {
     int x, y;
