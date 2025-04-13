@@ -9,20 +9,20 @@ int	close_window(int keycode)
 	return (0);
 }
 
-int init(t_cor *scenee)
+int	init(t_cor *scenee)
 {
-	t_mlx mlx;
+	t_mlx	mlx;
 
-    mlx.ptr = mlx_init();
-    if (!mlx.ptr)
-        return (1);
-    mlx.win_ptr = mlx_new_window(mlx.ptr, WIDTH, HEIGHT, "miniRT");
-    mlx.img = mlx_new_image(mlx.ptr, WIDTH, HEIGHT);
-    mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel,
-                                  &mlx.line_length, &mlx.endian);
-    render_scene(&mlx, scenee);
-    mlx_put_image_to_window(mlx.ptr, mlx.win_ptr, mlx.img, 0, 0);
-    mlx_key_hook(mlx.win_ptr, close_window, 0);
-    mlx_loop(mlx.ptr);
-    return (0);
+	mlx.ptr = mlx_init();
+	if (!mlx.ptr)
+		return (1);
+	mlx.win_ptr = mlx_new_window(mlx.ptr, WIDTH, HEIGHT, "miniRT");
+	mlx.img = mlx_new_image(mlx.ptr, WIDTH, HEIGHT);
+	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel,
+			&mlx.line_length, &mlx.endian);
+	render_scene(&mlx, scenee);
+	mlx_put_image_to_window(mlx.ptr, mlx.win_ptr, mlx.img, 0, 0);
+	mlx_key_hook(mlx.win_ptr, close_window, 0);
+	mlx_loop(mlx.ptr);
+	return (0);
 }

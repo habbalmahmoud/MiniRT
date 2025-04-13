@@ -193,6 +193,33 @@ typedef struct s_ray_utils
 	float tmp[3];
 }		t_ray_utils;
 
+typedef struct s_render_utils
+{
+	int x;
+	int y;
+	t_ray ray;
+	int color;
+	float best_t;
+	int hit_type;
+	t_sp *hit_sphere;
+	t_pl *hit_plane;
+	t_cy *hit_cylinder;
+	int cylinder_hit_part;
+	t_sp_list *cur_s;
+	float t;
+	t_pl_list *cur_p;
+	t_cy_list *cur_c;
+	int hit_part;
+	float hit_point[3];
+	float scaled[3];
+	float normal[3];
+	int obj_color[3];
+	int intensity;
+	int r;
+	int g;
+	int b;
+}		t_render_utils;
+
 t_sp_list   *new_sphere(t_sp sphere);
 void         add_sphere(t_cor *cor, t_sp sphere);
 t_cy_list   *new_cylinder(t_cy cyl);
@@ -226,5 +253,10 @@ void		int_cyl2(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
 void		int_cyl4(t_ray ray, t_cy_utils *cy_utils);
 void		int_cyl3(t_ray ray, t_cy *cylinder, t_cy_utils *cy_utils);
 int			int_cyl5(t_cy_utils *cy_utils, int *hit_part);
+void red_util1(t_cor *scene, t_render_utils *render_utils);
+void rend_util2(t_cor *scene, t_render_utils *render_utils);
+void rend_utils3(t_cor *scene, t_render_utils *render_utils);
+void rend_utils4(t_render_utils *render_utils);
+void rend_utils5(t_render_utils *render_utils, t_cor *scene);
 
 #endif

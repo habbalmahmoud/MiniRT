@@ -113,7 +113,9 @@ char	**ftt_split(char const *s, char *c)
 /* Create a new sphere node */
 t_sp_list *new_sphere(t_sp sphere)
 {
-    t_sp_list *node = malloc(sizeof(t_sp_list));
+    t_sp_list *node;
+
+	node = malloc(sizeof(t_sp_list));
     if (!node)
     {
         perror("Failed to allocate sphere node");
@@ -127,9 +129,10 @@ t_sp_list *new_sphere(t_sp sphere)
 /* Append a sphere to the scene's sphere list */
 void add_sphere(t_cor *cor, t_sp sphere)
 {
-    t_sp_list *node = new_sphere(sphere);
+    t_sp_list *node;
     t_sp_list *tmp;
 
+	node = new_sphere(sphere);
     if (!node)
         return;
     if (cor->spheres == NULL)
@@ -146,7 +149,9 @@ void add_sphere(t_cor *cor, t_sp sphere)
 /* Create a new cylinder node */
 t_cy_list *new_cylinder(t_cy cyl)
 {
-    t_cy_list *node = malloc(sizeof(t_cy_list));
+    t_cy_list *node;
+
+	node = malloc(sizeof(t_cy_list));
     if (!node)
     {
         perror("Failed to allocate cylinder node");
@@ -160,9 +165,10 @@ t_cy_list *new_cylinder(t_cy cyl)
 /* Append a cylinder to the scene's cylinder list */
 void add_cylinder(t_cor *cor, t_cy cyl)
 {
-    t_cy_list *node = new_cylinder(cyl);
+    t_cy_list *node;
     t_cy_list *tmp;
 
+	node = new_cylinder(cyl);
     if (!node)
         return;
     if (cor->cylinders == NULL)
@@ -179,7 +185,9 @@ void add_cylinder(t_cor *cor, t_cy cyl)
 /* Create a new plane node */
 t_pl_list *new_plane(t_pl plane)
 {
-    t_pl_list *node = malloc(sizeof(t_pl_list));
+    t_pl_list *node;
+
+	node = malloc(sizeof(t_pl_list));
     if (!node)
     {
         perror("Failed to allocate plane node");
@@ -193,8 +201,10 @@ t_pl_list *new_plane(t_pl plane)
 /* Append a plane to the scene's plane list */
 void add_plane(t_cor *cor, t_pl plane)
 {
-    t_pl_list *node = new_plane(plane);
+    t_pl_list *node;
     t_pl_list *tmp;
+
+	node = new_plane(plane);
     if (!node)
         return;
     if (cor->planes == NULL)
@@ -208,6 +218,20 @@ void add_plane(t_cor *cor, t_pl plane)
     tmp->next = node;
 }
 
+int check_dup_util(char **line, t_val *val)
+{
+	if (!ft_strncmp(line[0], "A", ft_strlen(line[0])) && val->a == true)
+        return (1); else if (!ft_strncmp(line[0], "A", ft_strlen(line[0])) && val->a == false)
+        val->a = true; else if (!ft_strncmp(line[0], "C", ft_strlen(line[0])) && val->c == true)
+        return (1); else if (!ft_strncmp(line[0], "C", ft_strlen(line[0])) && val->c == false)
+        val->c = true; else if (!ft_strncmp(line[0], "L", ft_strlen(line[0])) && val->l == true)
+        return (1); else if (!ft_strncmp(line[0], "L", ft_strlen(line[0])) && val->l == false)
+        val->l = true; else if (!ft_strncmp(line[0], "cy", ft_strlen(line[0])) && val->cy == false)
+        val->cy = true; else if (!ft_strncmp(line[0], "sp", ft_strlen(line[0])) && val->sp == false)
+        val->sp = true; else if (!ft_strncmp(line[0], "pl", ft_strlen(line[0])) && val->pl == false)
+        val->pl = true;
+	return (0);
+}
 
 int check_dup(char **line, t_val *val)
 {
@@ -217,26 +241,8 @@ int check_dup(char **line, t_val *val)
         || !ft_strncmp(line[0], "\0", ft_strlen(line[0])) || !ft_strncmp(line[0], "\n", ft_strlen(line[0]))))
     {
         if (line[0])
-        {
-            if (!ft_strncmp(line[0], "A", ft_strlen(line[0])) && val->a == true)
-                return (1);
-            else if (!ft_strncmp(line[0], "A", ft_strlen(line[0])) && val->a == false)
-                val->a = true;
-            else if (!ft_strncmp(line[0], "C", ft_strlen(line[0])) && val->c == true)
-                return (1);
-            else if (!ft_strncmp(line[0], "C", ft_strlen(line[0])) && val->c == false)
-                val->c = true;
-            else if (!ft_strncmp(line[0], "L", ft_strlen(line[0])) && val->l == true)
-                return (1);
-            else if (!ft_strncmp(line[0], "L", ft_strlen(line[0])) && val->l == false)
-                val->l = true;
-            else if (!ft_strncmp(line[0], "cy", ft_strlen(line[0])) && val->cy == false)
-                val->cy = true;
-            else if (!ft_strncmp(line[0], "sp", ft_strlen(line[0])) && val->sp == false)
-                val->sp = true;
-            else if (!ft_strncmp(line[0], "pl", ft_strlen(line[0])) && val->pl == false)
-                val->pl = true;
-        }
+            if (check_dup_util(line, val) == 1)
+				return (1);
     }
     else
         return (2);
