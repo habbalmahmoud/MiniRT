@@ -1,4 +1,4 @@
-SRCS = main.c  check_the_map.c  minirt.c validation.c init.c ray.c light.c render.c vec.c plane.c cylinder.c cylinder_u.c rend_utils.c
+SRCS = main.c  check_the_map.c  minirt.c validation.c init.c ray.c light.c render.c vec.c plane.c cylinder.c cylinder_u.c rend_utils.c util1.c util2.c util3.c util4.c util5.c util6.c util7.c
 
 SRCS_DIR = $(addprefix srcs/, $(SRCS))
 

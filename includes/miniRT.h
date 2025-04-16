@@ -6,7 +6,7 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:55:57 by mhabbal           #+#    #+#             */
-/*   Updated: 2025/04/16 10:12:59 by mhabbal          ###   ########.fr       */
+/*   Updated: 2025/04/16 15:17:46 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,15 @@ typedef struct s_render_utils
 	int			b;
 }		t_render_utils;
 
+typedef struct s_stf_utils
+{
+	float	result;
+	float	fraction;
+	int		sign;
+	int		divisor;
+	int		decimal_found;
+}		t_stf_utils;
+
 t_sp_list	*new_sphere(t_sp sphere);
 void		add_sphere(t_cor *cor, t_sp sphere);
 t_cy_list	*new_cylinder(t_cy cyl);
@@ -277,5 +286,39 @@ void		rend_util2(t_cor *scene, t_render_utils *render_utils);
 void		rend_utils3(t_cor *scene, t_render_utils *render_utils);
 void		rend_utils4(t_render_utils *render_utils);
 void		rend_utils5(t_render_utils *render_utils, t_cor *scene);
+int			check_cor_util(char **line, t_cor *cor);
+int			check_cor(char **line, t_cor *cor);
+int			validate1(char **line, t_val *val);
+int			validate2(char **line, t_cor *cor);
+int			validate3(t_val *val, char **line, char **map);
+int			check_cor_sp(char **line, t_cor *cor);
+int			check_cy_util(char **xyz, char **vector, char **rgb, t_cy *cyl);
+int			check_cor_cy(char **line, t_cor *cor);
+int			check_pl_util(char **xyz, char **vector, char **rgb, t_pl *plane);
+int			check_cor_pl(char **line, t_cor *cor);
+int			check_c_util_2(char **xyz, char **vector);
+int			check_cor_c(char **line, t_cor *cor);
+int			check_l_util(char **line);
+int			check_cor_l(char **line, t_cor *cor);
+int			check_sp_util(char **xyz, char **rgb, t_sp *sphere, t_cor *cor);
+void		add_plane(t_cor *cor, t_pl plane);
+int			check_dup_util(char **line, t_val *val);
+int			check_dup(char **line, t_val *val);
+void		stf_util(const char *str, t_stf_utils *stf_utils);
+float		string_to_float(const char *str);
+t_sp_list	*new_sphere(t_sp sphere);
+void		add_sphere(t_cor *cor, t_sp sphere);
+t_cy_list	*new_cylinder(t_cy cyl);
+void		add_cylinder(t_cor *cor, t_cy cyl);
+t_pl_list	*new_plane(t_pl plane);
+void		assign_bbig(char *sub_big, size_t *i, size_t *j, char const *s);
+int			check_sep(char s, char *c);
+void		fill_bbig(char **big, char const *s, char *c);
+size_t		ccount_words(char const *s, char *c);
+char		**ftt_split(char const *s, char *c);
+int			validate(char **map, t_cor *cor);
+int			check_c_util(char **line);
+t_val		*init_val(t_val *data);
+int			check_cor_a(char **line, t_cor *cor);
 
 #endif
