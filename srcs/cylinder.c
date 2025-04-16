@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cylinder.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 09:54:59 by mhabbal           #+#    #+#             */
+/*   Updated: 2025/04/16 10:14:58 by mhabbal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/miniRT.h"
 
 float	intersect_cylinder(t_ray ray, t_cy *cylinder, int *hit_part)
@@ -6,14 +18,14 @@ float	intersect_cylinder(t_ray ray, t_cy *cylinder, int *hit_part)
 
 	int_cyl(ray, cylinder, &cy_utils);
 	cy_utils.t_lateral = -1.0f;
-	if (fabs(cy_utils.A) > 1e-6)
+	if (fabs(cy_utils.a) > 1e-6)
 	{
-		cy_utils.discriminant = cy_utils.B * cy_utils.B - 4
-			* cy_utils.A * cy_utils.C_val;
+		cy_utils.discriminant = cy_utils.b * cy_utils.b - 4
+			* cy_utils.a * cy_utils.c_val;
 		if (cy_utils.discriminant >= 0)
 		{
 			cy_utils.sqrt_disc = sqrt(cy_utils.discriminant);
-			cy_utils.t1 = (-cy_utils.B - cy_utils.sqrt_disc) / (2 * cy_utils.A);
+			cy_utils.t1 = (-cy_utils.b - cy_utils.sqrt_disc) / (2 * cy_utils.a);
 			int_cyl2(ray, cylinder, &cy_utils);
 		}
 	}
