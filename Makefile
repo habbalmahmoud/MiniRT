@@ -16,8 +16,8 @@ CC = cc
 C_FLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 
-INCLUDES = -L ./lib/mlx -lmlx -lXext -lX11 -lm -lbsd
-
+#INCLUDES = -L ./lib/mlx 
+#-lmlx -lXext -lX11 -lm -lbsd
 
 MLX_FLAGS = -lm -lXext -lX11
 

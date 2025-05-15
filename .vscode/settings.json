@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "minirt.h": "c",
-        "stdbool.h": "c",
-        "unistd.h": "c"
-    }
-}
